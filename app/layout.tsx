@@ -21,25 +21,80 @@ export const metadata = {
   themeColor: "#FFF",
 };
 
+/* eslint-disable @next/next/no-img-element */
+import CaseList from "@/components/case/CaseList";
+import CaseListSkeleton from "@/components/case/CaseListSkeleton";
+import EditButton from "@/components/case/EditButton";
+import "./globals.css";
+
+const CaseListComponent = CaseList as unknown as () => JSX.Element;
+
 export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  children }: { 
+    children: React.ReactNode;
+  }) {
   return (
     <html lang="en">
-      <body className={cx(sfPro.variable, inter.variable)}>
-        <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>🚀🚀🚀</title>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body>
         <Suspense fallback="...">
           {/* @ts-expect-error Server Component */}
           <Nav />
         </Suspense>
-        <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
-          {children}
-        </main>
-        <Footer />
-        <Analytics />
+        <div className="main">
+          <section className="col sidebar">
+            <section className="sidebar-header">
+              <img
+                className="logo"
+                src="/icons/svg/logo.svg"
+                width="22px"
+                height="20px"
+                alt=""
+                role="presentation"
+              />
+              <strong>Cases</strong>
+            </section>
+            <section className="sidebar-menu" role="menubar">
+              <EditButton>Create Case</EditButton>
+            </section>
+            <nav>
+              <Suspense fallback={<CaseListSkeleton />}>
+                <CaseListComponent />
+              </Suspense>
+            </nav>
+          </section>
+          <section className="col">{children}</section>
+        </div>
       </body>
     </html>
   );
 }
+
+// export default async function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en">
+//       <body className={cx(sfPro.variable, inter.variable)}>
+//         <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
+//         <Suspense fallback="...">
+//           {/* @ts-expect-error Server Component */}
+//           <Nav />
+//         </Suspense>
+//         <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
+//           {children}
+//         </main>
+//         <Footer />
+//         <Analytics />
+//       </body>
+//     </html>
+//   );
+// }
