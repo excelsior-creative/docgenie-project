@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 // Delete Case
 export async function DELETE (Request, Context) {
-    console.log ("Context", Context);
+    console.log (Context);
     
     let updatedCase = await prisma.case.delete({
         where: { id: parseInt (Context.params.id) },

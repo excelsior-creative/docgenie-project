@@ -1,210 +1,246 @@
 export const json = {
-    "title": "Case Information",
-    "pages": [
+  "title": "Case Information",
+  "pages": [
+   {
+    "name": "page1",
+    "elements": [
      {
-      "name": "page1",
-      "elements": [
-       {
-        "type": "text",
-        "name": "name",
-        "title": "Case Name",
-        "hideNumber": true,
-        "placeholder": "Enter Case Name"
-       },
-       {
-        "type": "text",
-        "name": "CAUSE_NUMBER",
-        "title": "Case Number",
-        "hideNumber": true
-       },
-       {
-        "type": "tagbox",
-        "name": "CaseType",
-        "title": "Case Type",
-        "hideNumber": true,
-        "choices": [
-         {
-          "value": "Item 1",
-          "text": "Type 1"
-         },
-         {
-          "value": "Item 2",
-          "text": "Type 2"
-         },
-         {
-          "value": "Item 3",
-          "text": "Type 3"
-         }
-        ]
-       },
-       {
-         "type": "text",
-         "name": "{STATE}",
-         "title": "State",
-         "hideNumber": true
-       },
-       {
-         "type": "text",
-         "name": "{COUNTY}",
-         "title": "County",
-         "hideNumber": true
-       },
-       {
-        "type": "dropdown",
-        "name": "StateStatute",
-        "title": "State Statute",
-        "hideNumber": true,
-        "choices": [
-         {
-          "value": "Item 1",
-          "text": "State Statute 1"
-         },
-         {
-          "value": "Item 2",
-          "text": "State Statute 2"
-         },
-         {
-          "value": "Item 3",
-          "text": "State Statute 3"
-         }
-        ]
-       },
-       {
-        "type": "comment",
-        "name": "description",
-        "title": "Case Description",
-        "hideNumber": true
-      },
-      ],
-      "title": "Case Information"
+      "type": "text",
+      "name": "name",
+      "title": "Case Name",
+      "hideNumber": true,
+      "placeholder": "Enter Case Name"
      },
      {
-      "name": "page2",
-      "elements": [
-       {
-        "type": "text",
-        "name": "{CASE_AGENT_NAME}",
-        "title": "Officer Full Legal Name",
-        "hideNumber": true
-       },
-       {
-        "type": "text",
-        "name": "OfficerTitle",
-        "title": "Title",
-        "hideNumber": true
-       },
-       {
-        "type": "text",
-        "name": "Agency",
-        "title": "Agency",
-        "hideNumber": true
-       },
-       {
-        "type": "paneldynamic",
-        "name": "question8",
-        "title": "Category of Experience",
-        "hideNumber": true,
-        "templateElements": [
-         {
-          "type": "text",
-          "name": "Experience",
-          "title": "Experience"
-         },
-         {
-          "type": "text",
-          "name": "ExperienceYears",
-          "startWithNewLine": false,
-          "title": "Number of Years",
-          "inputType": "number"
-         }
-        ]
-       }
-      ],
-      "title": "Officer Information"
+      "type": "text",
+      "name": "Case Number",
+      "title": "Case Number",
+      "hideNumber": true
      },
      {
-      "name": "page3",
-      "elements": [
+      "type": "tagbox",
+      "name": "Case Type",
+      "title": "Case Type",
+      "hideNumber": true,
+      "choices": [
        {
-        "type": "panel",
-        "name": "panel1",
-        "elements": [
-         {
-            "type": "datepicker",
-            "name": "SearchFrom",
-            "inputType": "date",
-            "title": "From:",
-            "dateFormat": "mm/dd/yy",
-            "hideNumber": true
-         },
-         {
-          "type": "datepicker",
-          "name": "SearchTo",
-          "inputType": "date",
-          "title": "To",
-          "dateFormat": "mm/dd/yy",
-          "startWithNewLine": false,
-          "hideNumber": true
-         }
-        ],
-        "title": "Search Time Period"
+        "value": "Theft",
+        "text": "Theft"
        },
        {
-        "type": "paneldynamic",
-        "name": "question12",
-        "title": "Case Attachments",
-        "hideNumber": true,
-        "templateElements": [
-         {
-          "type": "file",
-          "name": "question13",
-          "title": "Attach File"
-         },
-         {
-          "type": "dropdown",
-          "name": "AttachmentType",
-          "startWithNewLine": false,
-          "title": "Type",
-          "choices": [
-           "Item 1",
-           "Item 2",
-           "Item 3"
-          ]
-         }
-        ]
+        "value": "Assault",
+        "text": "Assault"
        },
        {
-        "type": "paneldynamic",
-        "name": "question10",
-        "title": "Statement of Facts",
-        "hideNumber": true,
-        "templateElements": [
-         {
-          "type": "text",
-          "name": "Facts",
-          "title": "Facts"
-         }
-        ]
-       },
-       {
-        "type": "paneldynamic",
-        "name": "question18",
-        "title": "Exact Search Queries",
-        "hideNumber": true,
-        "templateElements": [
-         {
-          "type": "text",
-          "name": "Query",
-          "title": "Search Query"
-         }
-        ]
+        "value": "Fraud",
+        "text": "Fraud"
        }
-      ],
-      "title": "Search Warrant Information"
+      ]
+     },
+     {
+      "type": "dropdown",
+      "name": "Case Status",
+      "title": "Case Status",
+      "hideNumber": true,
+      "choices": [
+       {
+        "value": "Open",
+        "text": "Open"
+       },
+       {
+        "value": "Closed",
+        "text": "Closed"
+       },
+       {
+        "value": "Under Investigation",
+        "text": "Under Investigation"
+       }
+      ]
+     },
+     {
+      "type": "comment",
+      "name": "Case Description",
+      "title": "Case Description",
+      "hideNumber": true
+     },
+     {
+      "type": "text",
+      "name": "State",
+      "title": "State",
+      "hideNumber": true
+     },
+     {
+      "type": "text",
+      "name": "County",
+      "title": "County",
+      "hideNumber": true
+     },
+     {
+      "type": "text",
+      "name": "Location",
+      "title": "Location",
+      "hideNumber": true
+     },
+     {
+      "type": "dropdown",
+      "name": "State Statute",
+      "title": "State Statute",
+      "hideNumber": true,
+      "choices": [
+       {
+        "value": "Item 1",
+        "text": "State Statute 1"
+       },
+       {
+        "value": "Item 2",
+        "text": "State Statute 2"
+       },
+       {
+        "value": "Item 3",
+        "text": "State Statute 3"
+       }
+      ]
      }
     ],
-    "showCompletedPage": false,
-    "showTOC": true,
-    "textUpdateMode": "onTyping",
-    "completeText": "Done",
+    "title": "Case Information"
+   },
+   {
+    "name": "page2",
+    "elements": [
+     {
+      "type": "text",
+      "name": "Officer Name",
+      "title": "Officer Full Legal Name",
+      "hideNumber": true
+     },
+     {
+      "type": "text",
+      "name": "Officer Title",
+      "title": "Title",
+      "hideNumber": true
+     },
+     {
+      "type": "text",
+      "name": "Agency",
+      "title": "Agency",
+      "hideNumber": true
+     },
+     {
+      "type": "paneldynamic",
+      "name": "Category of Experience",
+      "title": "Category of Experience",
+      "hideNumber": true,
+      "templateElements": [
+       {
+        "type": "text",
+        "name": "Experience",
+        "title": "Experience"
+       },
+       {
+        "type": "text",
+        "name": "ExperienceYears",
+        "startWithNewLine": false,
+        "title": "Number of Years",
+        "inputType": "number"
+       }
+      ]
+     }
+    ],
+    "title": "Officer Information"
+   },
+   {
+    "name": "page3",
+    "elements": [
+     {
+      "type": "text",
+      "name": "Office Name",
+      "title": "Name",
+      "hideNumber": true
+     },
+     {
+      "type": "text",
+      "name": "Contact",
+      "title": "Contact",
+      "hideNumber": true,
+      "inputType": "tel"
+     },
+     {
+      "type": "paneldynamic",
+      "name": "question9",
+      "title": "Additional Information",
+      "hideNumber": true,
+      "templateElements": [
+       {
+        "type": "text",
+        "name": "Information",
+        "title": "Information"
+       }
+      ]
+     }
+    ],
+    "title": "Plantiff Information"
+   },
+   {
+    "name": "page4",
+    "elements": [
+     {
+      "type": "paneldynamic",
+      "name": "Case Attachments",
+      "title": "Case Attachments",
+      "hideNumber": true,
+      "templateElements": [
+       {
+        "type": "file",
+        "name": "Attachment",
+        "title": "Attach File"
+       }
+      ]
+     },
+     {
+      "type": "paneldynamic",
+      "name": "Statement of Facts",
+      "title": "Statement of Facts",
+      "hideNumber": true,
+      "templateElements": [
+       {
+        "type": "text",
+        "name": "Facts",
+        "title": "Facts"
+       }
+      ]
+     },
+     {
+      "type": "paneldynamic",
+      "name": "Exact Search Queries",
+      "title": "Exact Search Queries",
+      "hideNumber": true,
+      "templateElements": [
+       {
+        "type": "text",
+        "name": "Query",
+        "title": "Search Query"
+       }
+      ]
+     },
+     {
+      "type": "paneldynamic",
+      "name": "Evidence",
+      "title": "Evidence",
+      "hideNumber": true,
+      "templateElements": [
+       {
+        "type": "text",
+        "name": "Evidence",
+        "title": "Evidence"
+       }
+      ]
+     }
+    ],
+    "title": "Search Warrant Information"
    }
+  ],
+  "showCompletedPage": false,
+  "showTOC": true,
+  "textUpdateMode": "onTyping",
+  "completeText": "Done"
+ }

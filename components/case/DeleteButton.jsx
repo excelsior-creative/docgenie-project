@@ -24,7 +24,7 @@ const deleteNote = async (
   
   if (res.ok) {
     startTransition(() => {
-      router.replace("/");
+      router.replace("/case");
       router.refresh();
     });
   }

@@ -1,6 +1,5 @@
 'use client'
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client" 
+import React, { useState, useEffect, startTransition } from "react";
 import { Model } from "survey-core";
 import { Survey } from "survey-react-ui";
 import $ from "jquery";
@@ -8,9 +7,9 @@ import * as SurveyCore from "survey-core";
 import { jqueryuidatepicker } from "surveyjs-widgets";
 import "jquery-ui-dist/jquery-ui.css";
 import "survey-core/defaultV2.min.css";
-import "./index.css";
-import { json } from "./casejson";
+import { json } from "./casejson2";
 import dynamic from 'next/dynamic'
+import { useRouter } from "next/navigation";
 
 window["$"] = window["jQuery"] = $;
 require("jquery-ui-dist/jquery-ui.js");
@@ -26,54 +25,59 @@ const QuillEditor = dynamic(
     { ssr: false }
 )
 
-async function updateCase (id, data, router) {
-    try {
-        const res = await fetch('/api/case', {
-          method: 'POST',
-          body: JSON.stringify({
-            id: id,
-            data
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        });
-  
-        startTransition(() => {
-          router.replace("/");
-          router.refresh();
-        });
+async function updateWarrant (id, caseId, data, value, router) {
+  try {
+      const res = await fetch('/api/case/warrant', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: id,
+          caseId: caseId,
+          data: data,
+          html: value
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
+      startTransition(() => {
+        router.replace("/case");
+        router.refresh();
+      });
+    
+    } catch (error)
+    {
+      console.log (error);
+    }
+  }
+    
+async function saveWarrant (id, caseId, data, value, router) {
+  try {
+      const res = await fetch('/api/case/warrant', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: id,
+          caseId: caseId,
+          data: data,
+          html: value
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
+      startTransition(() => {
+        router.replace("/case");
+        router.refresh();
+      });
       
-      } catch (error)
-      {
-        console.log (error);
-      }
-  }
-    
-  async function saveCase (data, router) {
-      try {
-          const res = await fetch('/api/case', {
-            method: 'PUT',
-            body: JSON.stringify({
-              data
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-            },
-          });
-    
-          startTransition(() => {
-            router.replace("/");
-            router.refresh();
-          });
-          
-        } catch (error)
-        {
-          console.log (error);
-        }
-  }
+    } catch (error)
+    {
+      console.log (error);
+    }
+}
 
 const fetchTemplates = async () => {
     try {
@@ -89,69 +93,109 @@ const fetchTemplates = async () => {
     }
   }
 
-async function SurveyComponent ({ id, data }) {
-    const templates = await fetchTemplates();
-    const [survey, setSurvey] = useState(new Model(json));
-    
+const SurveyComponent = ({ id, data, templates, setState, onComplete }) => {
+    // const templates = await fetchTemplates();    
+    const router = useRouter();
+    const survey = new Model(json);
+
+    // Avoid rehydration conflict
+    // https://nextjs.org/docs/messages/react-hydration-error
+    const [hasMounted, setHasMounted] = useState(false);
+    useEffect(() => {
+      setHasMounted(true)
+      setState(data);
+    }, []);
+
+    if (!hasMounted) {
+      return null;
+  }
+
     if (data) {
         survey.data = data;
     }
 
-    let isPreviewed = false;
-    function previewPdf () {
-        const oldFrame = document.getElementById("pdf-preview-frame");
-        if (oldFrame) oldFrame.parentNode.removeChild(oldFrame);
-        const previewDiv = document.getElementById("pdf-preview");
-        previewDiv.innerHTML = Template (survey, "Google");
-
-        const data = Template (survey, "Google", templates);
-
-        // const element = <DraftJsEditor initialContent={data} />;
-        const element = <QuillEditor initialContent={data} />;
-        
-        const root = ReactDOM.createRoot(
-            document.getElementById('pdf-preview')
-        );
-        root.render(element);
-        isPreviewed = true;
-    }
-
-    survey.navigationBar.getActionById("sv-nav-complete").visible = true;
-    
+    survey.navigationBar.getActionById("sv-nav-complete").visible = false;
+ 
     // survey.addNavigationItem({
-    //     id: "survey_save_as_file", title: "Save as PDF", action: saveSurveyToFile
+    //     id: "survey_pdf_preview", title: "Preview PDF", action: () => {}
     // });
-    // survey.addNavigationItem({
-    //     id: "survey_save_via_blob", title: "Save via Blob", action: savePdfViaBlob
-    // });
-    survey.addNavigationItem({
-        id: "survey_pdf_preview", title: "Preview PDF", action: previewPdf
-    });
 
     survey.onComplete.add((sender, options) => {
-        console.log(JSON.stringify(sender.data, null, 3));
-        
-        // if (data) {
-        //     updateCase (data.id, sender.data, router);
-        // }
-        // else {
-        //     saveCase (sender.data, router);
-        // }
+      console.log(JSON.stringify(sender.data, null, 3));
     });
     survey.onCurrentPageChanged.add((sender, options) => {
       console.log(JSON.stringify(sender.data, null, 3));
     });
     survey.onValueChanged.add((sender, options) => {
       console.log(JSON.stringify(sender.data, null, 3));
-      if (isPreviewed) { 
-        previewPdf();
-      }
+      setState(sender.data);
     });
 
-    return (<Survey model={survey} />);
+    return (
+    <Survey model={survey} />
+    );
 }
 
-export default SurveyComponent;
+const _App = ({ id, caseId, data, templates, warrant }) => {
+  const [isComponentVisible, setComponentVisible] = useState(true);
+  const [state, setState] = useState ("");
+  const [value, setValue] = useState (warrant);
+  const router = useRouter();
+
+  const toggleComponentVisibility = () => {
+    setComponentVisible(!isComponentVisible);
+  };
+
+  useEffect(() => {
+    setValue(Template (state, "Google", templates));
+  }, [state]);
+
+  return (
+    <div className="note-editor">
+      <div className="survey-component">
+        <SurveyComp
+        id={id}
+        data={data}
+        templates={templates}
+        setState={setState}
+        />
+      </div>
+      {isComponentVisible && (
+        <div className="component note-editor-preview">
+          <div className="save-warrant-button">
+            <button
+              className="edit-button edit-button--solid"
+              onClick={() => id ? updateWarrant (id, caseId, state, value, router) : saveWarrant (id, caseId, state, value, router)}>
+              Save Warrant
+            </button>
+          </div>
+          <Quill
+          initialContent={""}
+          value={value}
+          setValue={setValue}
+          />
+        </div>
+      )}
+      <button className="toggle-button edit-button edit-button--outline" onClick={toggleComponentVisibility}>
+        {isComponentVisible ? 'Hide Preview' : 'Show Preview'}
+      </button>
+    </div>
+  );
+}
+
+const SurveyComp = React.memo (SurveyComponent);
+
+const Quill = ({initialContent, value, setValue}) => {
+  return (
+    <QuillEditor
+    initialContent={initialContent}
+    value={value}
+    setValue={setValue}
+    />
+  );
+}
+
+export default _App;
 
 function fetchTemplate(name, templates) {
     if (!templates) {
@@ -167,7 +211,7 @@ function fetchTemplate(name, templates) {
     return null;
 }
 
-function Template (survey, name, templates) {
+function Template (surveyData, name, templates) {
     const template = fetchTemplate (name, templates);
     
     if (!template) {
@@ -177,13 +221,13 @@ function Template (survey, name, templates) {
     let fields = template.fields;
     let str = template.html;
 
-    for (const [key, value] of Object.entries(survey.data)) {
+    for (const [key, value] of Object.entries(surveyData)) {
         if ("{" + key + "}" in fields) {
             fields["{" + key + "}"] = value;
         }
     }
 
-    str = str.replace(/{\w+}/g, function(all) {
+    str = str.replace(/{[\w\s]+}/ig, function(all) {
         return fields[all] || all;
     });
 

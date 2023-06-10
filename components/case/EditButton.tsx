@@ -1,4 +1,5 @@
-import Link from "next/link";
+"use client";
+import { useRouter } from "next/navigation";
 
 type EditButtonProps = {
   children?: React.ReactNode;
@@ -6,13 +7,22 @@ type EditButtonProps = {
 };
 
 const EditButton = ({ children, caseId }: EditButtonProps) => {
+  const router = useRouter();
+  const buttonClasses = [
+    'edit-button',
+    caseId ? 'edit-button--solid' : 'edit-button--outline',
+  ].join(' ');
+
+  const buttonLink = caseId ? `/case/edit/${caseId}` : '/case/create';
+
+  const handleClick = () => {
+    router.push(buttonLink);
+  };
+
   return (
-    <Link
-      className={["edit-button", caseId ? "edit-button--solid" : "edit-button--outline"].join(" ")}
-      href={caseId ? `/case/edit/${caseId}` : "/case/create"}
-    >
+    <button className={buttonClasses} onClick={handleClick}>
       {children}
-    </Link>
+    </button>
   );
 };
 

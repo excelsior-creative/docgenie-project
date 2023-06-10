@@ -60,6 +60,7 @@
     "react-markdown": "^8.0.4",
     "react-pdf": "^6.2.2",
     "react-quill": "^2.0.0",
+    "react-simple-typewriter": "^5.0.1",
     "react-wrap-balancer": "^0.3.0",
     "redraft": "^0.10.2",
     "sass": "^1.62.1",

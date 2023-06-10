@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
@@ -17,20 +16,20 @@ export default function NavBar({ session }: { session: Session | null }) {
       <div
         className={`fixed top-0 w-full ${
           scrolled
-            ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
-            : "bg-white/0"
+            ? "border-b border-gray-200 bg-white backdrop-blur-xl"
+            : "bg-white"
         } z-30 transition-all`}
       >
-        <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
-          <Link href="/" className="flex items-center font-display text-2xl">
+        <div className="mx-5 flex pl-10 pr-10 pt-3 pb-3 items-center justify-between xl:mx-auto">
+          <Link href="/case" className="flex items-center font-display text-2xl no-underline">
             <Image
-              src="/logo.png"
-              alt="Precedent logo"
+              src="/docgenie.png"
+              alt="logo"
               width="30"
               height="30"
               className="mr-2 rounded-sm"
             ></Image>
-            <p>Precedent</p>
+            <p className="logo-text">DocGenie</p>
           </Link>
           <div>
             {session ? (

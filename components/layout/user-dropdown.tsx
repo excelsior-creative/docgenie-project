@@ -6,6 +6,7 @@ import { LayoutDashboard, LogOut } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { Session } from "next-auth";
+import "./styles.css";
 
 export default function UserDropdown({ session }: { session: Session }) {
   const { email, image } = session?.user || {};
@@ -34,7 +35,7 @@ export default function UserDropdown({ session }: { session: Session }) {
             </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              onClick={() => signOut()}
+              onClick={() => signOut({ callbackUrl: "/" })}
             >
               <LogOut className="h-4 w-4" />
               <p className="text-sm">Logout</p>

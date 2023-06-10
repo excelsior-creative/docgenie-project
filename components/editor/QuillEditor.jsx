@@ -5,9 +5,10 @@ import ReactQuill from "react-quill";
 import { saveAs } from "file-saver";
 import { pdfExporter } from "quill-to-pdf";
 import { downloadObjectAsJson } from "./download";
+import "@/app/globals.css"
 
-const QuillEditor = ({initialContent=""}) => {
-  const [value, setValue] = useState(initialContent);
+const QuillEditor = ({initialContent="", value, setValue }) => {
+  // const [value, setValue] = useState(initialContent);
   const editorRef = useRef(null);
 
   const exportDocument = () => {
@@ -45,10 +46,10 @@ const QuillEditor = ({initialContent=""}) => {
     <div className="app">
       <main className="main-content">
         <div className="action-container">
-          <button className="button" onClick={exportAsPDF}>
+          <button className="edit-button edit-button--solid" onClick={exportAsPDF}>
             Export as PDF
           </button>
-          <button className="button" onClick={exportDocument}>
+          {/* <button className="button" onClick={exportDocument}>
             Export as file
           </button>
           <input
@@ -67,8 +68,8 @@ const QuillEditor = ({initialContent=""}) => {
             >
               Import file
             </label>
-          </button>
-          <button className="button" onClick={clearDocument}>
+          </button> */}
+          <button className="delete-button delete-button--solid" onClick={clearDocument}>
             Clear document
           </button>
         </div>

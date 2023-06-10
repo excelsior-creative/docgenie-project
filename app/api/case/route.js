@@ -48,6 +48,7 @@ export async function PUT (Request) {
       title: Request.data.name,
       body: Request.data.description,
       data: Request.data,
+      user_id: Request.user_id,
     },
   });
 

@@ -1,10 +1,28 @@
 import SidebarCase from "./SidebarCase";
 import prisma from "@/lib/prisma"
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const fetchAllCases = async () => {
-    const res = await prisma.case.findMany({});  
-    return res;
-  };
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      const res = await prisma.case.findMany({
+        where: {
+          user_id: null
+        }
+      });
+      return res;
+    }
+    else {
+      const res = await prisma.case.findMany({
+        where: {
+          user_id: session.user.id
+        }});
+
+      return res;
+    }
+};
 
 const CaseList = async ({ searchText }) => {
   const cases = await fetchAllCases();

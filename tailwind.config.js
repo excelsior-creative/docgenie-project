@@ -2,6 +2,9 @@
 const plugin = require("tailwindcss/plugin");
 
 module.exports = {
+  corePlugins: {
+    preflight: false,
+  },
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   future: {
     hoverOnlyWhenSupported: true,
